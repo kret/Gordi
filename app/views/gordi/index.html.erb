@@ -1,0 +1,92 @@
+<%= javascript_include_tag "application" %>
+
+<div>
+	<!-- network params -->
+	<form action="/simulation" method="post" id="sim_form">
+		<input name="classifier[hidden_layers_params]" id="hlp" value="[3]">
+		<input name="classifier[learning_rate]" id="lr" value="0.3">
+		<input name="classifier[momentum]" id="m" value="0.2">
+		<input name="classifier[disable_bias]" id="db" value="false">
+		<input type="submit" name="go" id="go_button" value="Go">
+	</form>
+</div>
+
+<div>
+	<!-- training set selection -->
+	Training set selection
+	[SAP]
+	<script>
+		$(function() {
+			function init(data, textStatus, jqXHR) {
+				console.log(data);
+			}
+			$('#sim_form').submit(function(e) {
+				e.preventDefault();
+
+				var hlp = $('#hlp').attr('value');
+				var lr = $('#lr').attr('value');
+				var m = $('#m').attr('value');
+				var db = $('#db').attr('value');
+				var ts = {
+					'gA': [[0,0], [1, 1], [0.5, 0.5]],
+					'gB': [[10,10], [11, 11], [10.5, 10.5]],
+					'gC': [[20,20], [21, 21], [20.5, 20.5]]
+				};
+				$.post('/simulation.json', {
+					'classifier[hidden_layers_params]': hlp,
+					'classifier[learning_rate]': lr,
+					'classifier[momentum]': m,
+					'classifier[disable_bias]': db,
+					'classifier[training_set]': ts
+				}, init, 'json');
+				//return false;
+			});
+		});
+	</script>
+</div>
+
+<div>
+	<!-- network state -->
+	Network state
+	[SAP]
+</div>
+
+<div>
+	<!-- controls: next/prev -->
+	Controls
+</div>
+
+
+
+
+<style type="text/css">
+	svg {
+		border: 1px solid #EAD075;
+	}
+</style>
+
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" onload="startup()" onmousemove="moveIt(evt)">
+	<script><![CDATA[
+		function startup(){C=document.getElementById("C")}
+
+		function moveIt(evt){
+			C.setAttributeNS(null,"cx",evt.clientX)
+			C.setAttributeNS(null,"cy",evt.clientY)
+		}
+	]]></script>
+
+	<circle cx="60" cy="60" r="40" fill="white" stroke="black" stroke-width="3"/>
+	<circle id="C" cx="60" cy="60" r="22" fill="darkgrey" opacity="0.7" stroke="lightgrey" stroke-width="8"/>
+</svg>
+
+<svg>
+	<script><![CDATA[
+		function changeFill(){
+			D=document.getElementById("D")
+			D.setAttributeNS(null,"fill","black")
+		}
+	]]></script>
+
+	<circle id="D" cx="80" cy="100" r="22" fill="grey" onclick="changeFill()"/>
+</svg>

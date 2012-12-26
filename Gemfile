@@ -37,4 +37,5 @@ gem 'jbuilder'
 # To use debugger
 # gem 'debugger'
 
-gem 'ai4ruby'
+#gem 'ai4ruby', :require => 'ai4r'
+gem 'ai4r'
