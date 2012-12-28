@@ -6,10 +6,12 @@ class GordiController < ApplicationController
   	classifier = Classifier.new(params[:classifier])
     session[:classifier] = classifier
     @classifier = classifier
+    @current_state = classifier.current_state
   end
 
   def step
     session[:classifier].train() unless params[:number]
+    @current_state = classifier.current_state
   end
 
   def classify

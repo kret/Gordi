@@ -40,8 +40,16 @@ class Classifier
     self.network.eval(point)
   end
 
-  def hidden_layers_params=(params)
-    @hidden_layers_params = JSON.parse params if params
+  def current_state
+    state = []
+    training_set.each do |group|
+      group_state = []
+      group.each do |point|
+        group_state << network.eval(point)
+      end
+      state << group_state
+    end
+    state
   end
 
   def persisted?
