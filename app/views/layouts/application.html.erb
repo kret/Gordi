@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= content_for?(:title) ? yield(:title) : "Gordi" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Gordi" %>">
+    <meta name="author" content="Andrzej Undziłło">
     <%= stylesheet_link_tag "application", :media => "all" %>
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
@@ -26,6 +27,7 @@
             </div>
           </div>
           <footer>
+            <small>by Andrzej Undziłło</small>
           </footer>
         </div>
       </div> <!--! end of .container -->
