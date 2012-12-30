@@ -57,10 +57,8 @@ var x = 0, y = 0;
             });
         }
 
-        //var
-
         SAP.prototype.addPoints = function(_points) {
-            console.log('points ---', _points);
+            // console.log('points ---', _points);
             this.points = _points;
 
         };
@@ -71,11 +69,10 @@ var x = 0, y = 0;
 
 
 
-var board = new util.drawing.SAP($('body'), {
-
-            });
-
+var board = new util.drawing.SAP($('#training_set'), {});
+/*
 board.addPoints([
         {color: "#eeffaa", points: [[2,4], [7,8], [12,1]]},
         {color: "#aadd33", points: [[5,6], [1,2], [4,6]]}
     ]);
+*/

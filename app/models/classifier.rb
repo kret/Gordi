@@ -21,7 +21,7 @@ class Classifier
       send("#{name}=", value)
     end
 
-    @network = Ai4r::NeuralNetwork::Backpropagation.new([2] + @hidden_layers_params + [@training_set.length])
+    @network = Ai4r::NeuralNetwork::Backpropagation.new([2] + @hidden_layers_params + [@training_set.size])
     @network.set_parameters({
       :learning_rate => @learning_rate,
       :momentum => @momentum,
@@ -31,13 +31,14 @@ class Classifier
     @step = 0
   end
 
-  def train(step)
-    self.step += 1
-    self.network.train([])
+  def train(number)
+    @step += 1
+    tr_data = training_data(number)
+    network.train(*tr_data) unless tr_data.nil?
   end
 
   def classify(point)
-    self.network.eval(point)
+    network.eval(point)
   end
 
   def current_state
@@ -55,4 +56,21 @@ class Classifier
   def persisted?
     false
   end
+
+  private
+    def training_data(number)
+      number %= training_set.flatten.size / 2
+      total_no = 0
+      output = Array.new(training_set.size) { 0 }
+      training_set.each_with_index do |group, gno|
+        group.each do |point|
+          total_no += 1
+          if total_no == number
+            output[gno] = 1
+            return [point, output]
+          end
+        end
+      end
+      nil
+    end
 end

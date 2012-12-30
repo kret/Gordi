@@ -5,17 +5,18 @@ class GordiController < ApplicationController
   def init
   	classifier = Classifier.new(params[:classifier])
     session[:classifier] = classifier
-    @classifier = classifier
-    @current_state = classifier.current_state
+    @initial_state = classifier.current_state
   end
 
-  def step
-    session[:classifier].train() unless params[:number]
+  def train
+    classifier = session[:classifier]
+    no = params[:number]
+    classifier.train(no.to_i) unless no.nil?
     @current_state = classifier.current_state
   end
 
   def classify
   	point = [params[:x], params[:y]]
-    session[:classifier].classify(point)
+    @point = session[:classifier].classify(point)
   end
 end

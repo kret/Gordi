@@ -1,2 +1,1 @@
-json.classifier @classifier
-json.current_state @current_state
+json.initial_state @initial_state
