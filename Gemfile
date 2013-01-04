@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.9'
+gem 'rails', '3.2.10'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -41,3 +41,5 @@ gem 'puma'
 
 gem 'ai4ruby', :require => 'ai4r'
 #gem 'ai4r'
+
+gem 'meta_request', :group => [:development]
