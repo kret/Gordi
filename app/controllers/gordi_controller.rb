@@ -16,7 +16,7 @@ class GordiController < ApplicationController
   end
 
   def classify
-  	point = [params[:x], params[:y]]
-    @point = session[:classifier].classify(point)
+  	point = [params[:x].to_f, params[:y].to_f]
+    @classification = session[:classifier].classify(point)
   end
 end
