@@ -81,6 +81,7 @@ gordi.sendParameters = function() {
 		});
 		jQuery('#sim_form').off('submit');
 		jQuery('#sim_form').on('submit', false);
+		training_set_board.closeTrainingSet();
 	}
 };
 

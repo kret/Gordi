@@ -87,6 +87,11 @@ var util = {
 			}
 		};
 
+		SAP.prototype.closeTrainingSet = function() {
+			this.$el.off('click');
+			this.$el.off('mousemove');
+		};
+
 		return SAP;
 	})();
 }(jQuery));
