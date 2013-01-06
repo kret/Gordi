@@ -6,25 +6,30 @@
 	<div class="tab-content">
 
 		<div class="tab-pane active" id="tabParams">
-			<form id="sim_form">
-				<fieldset>
-					<label for="hlp">Hidden layers parameters</label>
-					<input type="text" id="hlp" placeholder="[3, 4, 5]" value="[3]">
-					<label for="lr">Learning rate</label>
-					<input type="number" id="lr" placeholder="0.3" min="0" max="1" step="0.1" value="0.3">
-					<label for="m">Momentum</label>
-					<input type="number" id="m" placeholder="0.2" min="0" max="1" step="0.1" value="0.2">
-					<label for="db">Disable bias</label>
-					<select id="db">
-						<option>false</option>
-						<option>true</option>
-					</select>
-					<br>
-					<button type="submit" class="btn btn-primary">Go</button>
+			<div class="row">
+				<div class="span3">
+					<form id="sim_form">
+						<fieldset>
+							<label for="hlp">Hidden layers parameters</label>
+							<input type="text" id="hlp" placeholder="[3, 4, 5]" value="[3]">
+							<label for="lr">Learning rate</label>
+							<input type="number" id="lr" placeholder="0.3" min="0" max="1" step="0.1" value="0.3">
+							<label for="m">Momentum</label>
+							<input type="number" id="m" placeholder="0.2" min="0" max="1" step="0.1" value="0.2">
+							<label for="db">Disable bias</label>
+							<select id="db">
+								<option>false</option>
+								<option>true</option>
+							</select>
+							<button type="submit" class="btn btn-primary pull-right">Go</button>
+						</fieldset>
+					</form>
+				</div>
+				<div class="span9">
 					Training set selection
 					<div id="training_set"></div>
-				</fieldset>
-			</form>
+				</div>
+			</div>
 		</div>
 
 		<div class="tab-pane" id="tabPanel">
