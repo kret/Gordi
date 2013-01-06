@@ -77,7 +77,7 @@ var util = {
 				for (var j = 0; j < pointData.points.length; j += 1) {
 					el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 					el.setAttributeNS(null, 'cx', pointData.points[j][0]);
-					el.setAttributeNS(null, 'cy', pointData.points[j][0]);
+					el.setAttributeNS(null, 'cy', pointData.points[j][1]);
 					el.setAttributeNS(null, 'r', 3);
 					el.setAttributeNS(null, 'fill', pointData.color);
 					el.setAttributeNS(null, 'stroke', '#000000');
