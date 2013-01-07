@@ -14,11 +14,16 @@ gordi.showClassification = function(data) {
 };
 
 gordi.initNetwork = function(data) {
-	gordi.network.history.push(data.training_history);
+	gordi.network.history = data.training_history;
 	jQuery('#tabs a[href="#tabPanel"]').tab('show');
 
-	var panel = jQuery('#tabPanel');
+	var state_panel = jQuery('#network_state');
+	var eval_panel = jQuery('#network_eval');
 
+	network_state_board = util.drawing.SAP(state_panel, {});
+	network_eval_board = util.drawing.SAP(eval_panel, {});
+
+	/*
 	panel.append(jQuery('<input type="number" id="a" value="0">'));
 	var c = jQuery('<button type="submit" id="c" class="btn">Classify</button>');
 	panel.append(c);
@@ -35,6 +40,7 @@ gordi.initNetwork = function(data) {
 			success: gordi.showClassification
 		});
 	});
+	*/
 };
 
 gordi.sendParameters = function() {
@@ -147,9 +153,16 @@ gordi.util.groupCreated = function(group) {
 	}
 };
 
+var training_set_board = null;
+var network_state_board = null;
+var network_eval_board = null;
+
 jQuery(function() {
 	jQuery('#sim_form').on('submit', function(e) {
 		e.preventDefault();
 		gordi.sendParameters();
 	});
+
+	training_set_board = new util.drawing.SAP(jQuery('#training_set'), {});
+	training_set_board.actsAsTrainingSet();
 });

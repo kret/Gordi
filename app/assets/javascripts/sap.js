@@ -123,13 +123,3 @@ var util = {
 		return SAP;
 	})();
 }(jQuery));
-
-var training_set_board = new util.drawing.SAP(jQuery('#training_set'), {});
-training_set_board.actsAsTrainingSet();
-
-/*
-training_set_board.drawPoints([
-	{ color: '#eeffaa', points: [[2,4], [17,18], [22,21]] },
-	{ color: '#aadd33', points: [[35,36], [41,42], [54,56]] }
-]);
-*/
