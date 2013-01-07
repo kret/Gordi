@@ -4,7 +4,7 @@ class Classifier
   extend ActiveModel::Naming
 
   attr_reader :step
-  attr_accessor :training_set, :hidden_layers_params, :learning_rate, :momentum, :disable_bias, :network
+  attr_accessor :training_set, :hidden_layers_params, :learning_rate, :momentum, :disable_bias, :network, :training_history
   # attr_accessible :training_set, :hidden_layers_params, :learning_rate, :momentum, :disable_bias
 
   # validates_presence_of :name
@@ -27,14 +27,14 @@ class Classifier
       :momentum => @momentum,
       :disable_bias => @disable_bias
     })
-
-    @step = 0
+    @training_history = []
   end
 
-  def train(number)
-    @step += 1
-    tr_data = training_data(number)
-    network.train(*tr_data) unless tr_data.nil?
+  def train
+    normalized_training_data.each do |datum|
+      network.train(*datum)
+      training_history << [datum[0], current_state]
+    end
   end
 
   def classify(point)
@@ -46,7 +46,7 @@ class Classifier
     training_set.each do |group|
       group_state = []
       group.each do |point|
-        group_state << network.eval(point)
+        group_state << [point, network.eval(point)]
       end
       state << group_state
     end
@@ -58,19 +58,13 @@ class Classifier
   end
 
   private
-    def training_data(number)
-      number %= training_set.flatten.size / 2
-      total_no = 0
-      output = Array.new(training_set.size) { 0 }
-      training_set.each_with_index do |group, gno|
+    def normalized_training_data
+      normalized = []
+      training_set.each_with_index do |group, group_number|
         group.each do |point|
-          total_no += 1
-          if total_no == number
-            output[gno] = 1
-            return [point, output]
-          end
+          normalized << [point, Array.new(training_set.size) { |index| index == group_number ? 1 : 0 }]
         end
       end
-      nil
+      normalized
     end
 end

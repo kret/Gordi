@@ -1,1 +1,1 @@
-json.current_state @current_state
+json.training_history @training_history

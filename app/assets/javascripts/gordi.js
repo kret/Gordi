@@ -13,25 +13,12 @@ gordi.showClassification = function(data) {
 	console.log(data.classification);
 };
 
-gordi.recordTraining = function(data) {
-	gordi.network.history.push(data.current_state);
-};
-
 gordi.initNetwork = function(data) {
-	gordi.network.history.push(data.initial_state);
+	gordi.network.history.push(data.training_history);
 	jQuery('#tabs a[href="#tabPanel"]').tab('show');
+
 	var panel = jQuery('#tabPanel');
-	var b = jQuery('<button type="submit" id="b" class="btn">Train</button>');
-	panel.append(b);
-	b.on('click', function() {
-		jQuery.ajax({
-			type: 'GET',
-			url: '/train/' + gordi.network.history.length + '.json',
-			contentType: 'application/json; charset=utf-8',
-			dataType: 'json',
-			success: gordi.recordTraining
-		});
-	});
+
 	panel.append(jQuery('<input type="number" id="a" value="0">'));
 	var c = jQuery('<button type="submit" id="c" class="btn">Classify</button>');
 	panel.append(c);
@@ -67,7 +54,7 @@ gordi.sendParameters = function() {
 		});
 		jQuery.ajax({
 			type: 'POST',
-			url: '/simulation.json',
+			url: '/train.json',
 			contentType: 'application/json; charset=utf-8',
 			data: JSON.stringify({
 				'classifier': {
