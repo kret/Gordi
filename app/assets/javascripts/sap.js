@@ -56,6 +56,8 @@ var util = {
 					E.setAttributeNS(null, 'cy', cy);
 					E.setAttributeNS(null, 'r', 0);
 					E.setAttributeNS(null, 'fill', '#' + (Math.random() * 0xffffff << 0).toString(16));
+					E.setAttributeNS(null, 'stroke', '#111111');
+					E.setAttributeNS(null, 'stroke-width', 1);
 					current = 'circle' + (new Date()).getTime();
 					E.setAttributeNS(null, 'id', current);
 
@@ -105,6 +107,10 @@ var util = {
 					this.$el.append(el);
 				}
 			}
+		};
+
+		SAP.prototype.clear = function() {
+			$('circle', this.$el).remove();
 		};
 
 		SAP.prototype.closeTrainingSet = function() {
