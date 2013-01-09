@@ -36,14 +36,12 @@ class Classifier
   end
 
   def current_state
-    state = []
+    state = { :classifications => [] }
     training_set.each do |group|
-      group_state = { :color => group[:color], :classifications => [] }
       group[:points].each do |point|
         raw_decision = network.eval(point)
-        group_state[:classifications] << { :point => point, :decision => training_set[raw_decision.each_with_index.max[1]][:color], :raw => raw_decision }
+        state[:classifications] << { :point => point, :decision => training_set[raw_decision.each_with_index.max[1]][:color], :raw => raw_decision }
       end
-      state << group_state
     end
     state
   end
