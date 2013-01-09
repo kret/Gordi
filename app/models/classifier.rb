@@ -3,13 +3,7 @@ class Classifier
   include ActiveModel::Conversion
   extend ActiveModel::Naming
 
-  attr_reader :step
   attr_accessor :training_set, :hidden_layers_params, :learning_rate, :momentum, :disable_bias, :network, :training_history
-  # attr_accessible :training_set, :hidden_layers_params, :learning_rate, :momentum, :disable_bias
-
-  # validates_presence_of :name
-  # validates_format_of :email, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i
-  # validates_length_of :content, :maximum => 500
 
   def initialize(attributes = {})
     @training_set = []
@@ -33,7 +27,7 @@ class Classifier
   def train
     normalized_training_data.each do |datum|
       network.train(*datum)
-      training_history << [datum[0], current_state]
+      training_history << { :point_evaled => datum[0], :network_state => current_state }
     end
   end
 
@@ -44,9 +38,10 @@ class Classifier
   def current_state
     state = []
     training_set.each do |group|
-      group_state = []
-      group.each do |point|
-        group_state << [point, network.eval(point)]
+      group_state = { :color => group[:color], :classifications => [] }
+      group[:points].each do |point|
+        raw_decision = network.eval(point)
+        group_state[:classifications] << { :point => point, :decision => training_set[raw_decision.each_with_index.max[1]][:color], :raw => raw_decision }
       end
       state << group_state
     end
@@ -61,7 +56,7 @@ class Classifier
     def normalized_training_data
       normalized = []
       training_set.each_with_index do |group, group_number|
-        group.each do |point|
+        group[:points].each do |point|
           normalized << [point, Array.new(training_set.size) { |index| index == group_number ? 1 : 0 }]
         end
       end

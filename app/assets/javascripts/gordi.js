@@ -1,8 +1,8 @@
 var gordi = {
 	network: {
 		training_set: [],
-		flat_training_set: [],
-		history: []
+		history: [],
+		history_step: 0
 	},
 	util: {
 		groups: []
@@ -13,7 +13,7 @@ gordi.showClassification = function(data) {
 	console.log(data.classification);
 };
 
-gordi.initNetwork = function(data) {
+gordi.loadTrainingHistory = function(data) {
 	gordi.network.history = data.training_history;
 	jQuery('#tabs a[href="#tabPanel"]').tab('show');
 
@@ -22,6 +22,33 @@ gordi.initNetwork = function(data) {
 
 	network_state_board = util.drawing.SAP(state_panel, {});
 	network_eval_board = util.drawing.SAP(eval_panel, {});
+
+	var controls = jQuery('#network_state_controls');
+	var prev_btn = jQuery('<button type="submit" class="btn"><i class="icon-arrow-left"></i> Previous</button>');
+	var next_btn = jQuery('<button type="submit" class="btn">Next <i class="icon-arrow-right"></i></button>');
+	controls.append(prev_btn);
+	controls.append(jQuery('<span class="input-append"><input type="number" min="0" step="1" value="0" class="span1" id="stepNo"><span class="add-on" id="stepsCount">/ ' + gordi.network.history.length + '</span><button type="button" class="btn" id="stepGo">Go</button></span>'));
+	controls.append(next_btn);
+
+	prev_btn.on('click', function() {
+		if (gordi.network.history_step > 0) {
+			// show prev step on board
+			gordi.network.history_step -= 1;
+			jQuery('#stepNo').val(gordi.network.history_step);
+		}
+	});
+
+	next_btn.on('click', function() {
+		if (gordi.network.history_step < gordi.network.history.length) {
+			// show next step on board
+			gordi.network.history_step += 1;
+			jQuery('#stepNo').val(gordi.network.history_step);
+		}
+	});
+
+	// add actions to direct step button
+
+	// add classification widget
 
 	/*
 	panel.append(jQuery('<input type="number" id="a" value="0">'));
@@ -43,7 +70,7 @@ gordi.initNetwork = function(data) {
 	*/
 };
 
-gordi.sendParameters = function() {
+gordi.createNetwork = function() {
 	var hlp = JSON.parse(jQuery('#hlp').val());
 	if (gordi.util.isArrayOfNumbers(hlp)) {
 		var lr = Number(jQuery('#lr').val());
@@ -51,13 +78,7 @@ gordi.sendParameters = function() {
 		var db = jQuery('#db').val() === 'true';
 		var ts = gordi.trainingSet();
 		training_set_board.drawPoints(ts);
-		ts = jQuery.map(ts, function(e) {
-			return [e.points];
-		});
 		gordi.network.training_set = ts;
-		gordi.network.flat_training_set = jQuery.map(ts, function(n) {
-			return n;
-		});
 		jQuery.ajax({
 			type: 'POST',
 			url: '/train.json',
@@ -72,24 +93,12 @@ gordi.sendParameters = function() {
 				}
 			}),
 			dataType: 'json',
-			success: gordi.initNetwork
+			success: gordi.loadTrainingHistory
 		});
 		jQuery('#sim_form').off('submit');
 		jQuery('#sim_form').on('submit', false);
 		training_set_board.closeTrainingSet();
 	}
-};
-
-gordi.util.isArrayOfNumbers = function(ary) {
-	if (!jQuery.isArray(ary)) {
-		return false;
-	}
-	for (var i = 0; i < ary.length; i += 1) {
-		if (ary[i] !== Number(ary[i])) {
-			return false;
-		}
-	}
-	return true;
 };
 
 gordi.trainingSet = function() {
@@ -111,6 +120,22 @@ gordi.trainingSet = function() {
 		ts.push({ color: groups[i-1].color, points: group_points });
 	}
 	return ts;
+};
+
+gordi.util.historyToPoints = function(history) {
+
+};
+
+gordi.util.isArrayOfNumbers = function(ary) {
+	if (!jQuery.isArray(ary)) {
+		return false;
+	}
+	for (var i = 0; i < ary.length; i += 1) {
+		if (ary[i] !== Number(ary[i])) {
+			return false;
+		}
+	}
+	return true;
 };
 
 gordi.util.gaussRandom = function(E, D, min, max) {
@@ -160,7 +185,7 @@ var network_eval_board = null;
 jQuery(function() {
 	jQuery('#sim_form').on('submit', function(e) {
 		e.preventDefault();
-		gordi.sendParameters();
+		gordi.createNetwork();
 	});
 
 	training_set_board = new util.drawing.SAP(jQuery('#training_set'), {});
