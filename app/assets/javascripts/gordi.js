@@ -31,25 +31,9 @@ gordi.loadTrainingHistory = function(data) {
 	controls.append(jQuery('<span class="input-append"><input type="number" min="1" step="1" value="1" class="span1" id="stepNo"><span class="add-on" id="stepsCount">/ ' + gordi.network.history.length + '</span><button type="button" class="btn" id="stepGo">Go</button></span>'));
 	controls.append(next_btn);
 
-	prev_btn.on('click', function() {
-		if (gordi.network.history_step > 1) {
-			gordi.network.history_step -= 1;
-			jQuery('#stepNo').val(gordi.network.history_step);
+	prev_btn.on('click', gordi.util.previousTrainingStep);
 
-			// show prev step on board
-			gordi.drawNetworkState();
-		}
-	});
-
-	next_btn.on('click', function() {
-		if (gordi.network.history_step < gordi.network.history.length) {
-			gordi.network.history_step += 1;
-			jQuery('#stepNo').val(gordi.network.history_step);
-
-			// show next step on board
-			gordi.drawNetworkState();
-		}
-	});
+	next_btn.on('click', gordi.util.nextTrainingStep);
 
 	jQuery('#stepGo').on('click', function() {
 		var step = parseInt(jQuery('#stepNo').val(), 10);
@@ -57,6 +41,16 @@ gordi.loadTrainingHistory = function(data) {
 			gordi.network.history_step = step;
 			gordi.drawNetworkState();
 			jQuery('#stepNo').val(step);
+		}
+	});
+
+	jQuery('#stepNo').on('keyup', function(e) {
+		if (e.keyCode === 37) {
+			e.preventDefault();
+			gordi.util.previousTrainingStep();
+		} else if (e.keyCode === 39) {
+			e.preventDefault();
+			gordi.util.nextTrainingStep();
 		}
 	});
 
@@ -189,6 +183,26 @@ gordi.util.gaussRandom = function(E, D, min, max) {
 		ret = Math.round(D * y * Math.sqrt(-2.0 * Math.log(r2) / r2) + E);
 	} while (ret < min || (max !== null && ret > max));
 	return ret;
+};
+
+gordi.util.previousTrainingStep = function() {
+	if (gordi.network.history_step > 1) {
+		gordi.network.history_step -= 1;
+		jQuery('#stepNo').val(gordi.network.history_step);
+
+		// show prev step on board
+		gordi.drawNetworkState();
+	}
+};
+
+gordi.util.nextTrainingStep = function() {
+	if (gordi.network.history_step < gordi.network.history.length) {
+		gordi.network.history_step += 1;
+		jQuery('#stepNo').val(gordi.network.history_step);
+
+		// show next step on board
+		gordi.drawNetworkState();
+	}
 };
 
 gordi.util.groupCreated = function(group) {
