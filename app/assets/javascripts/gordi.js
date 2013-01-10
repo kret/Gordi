@@ -120,13 +120,12 @@ gordi.trainingSet = function() {
 	var ts = [];
 	var groups = gordi.util.groups;
 	for (var i = 1; i <= groups.length; i += 1) {
-		var vr = Number(jQuery('#gr' + i + 'var').val());
 		var count = Number(jQuery('#gr' + i + 'count').val());
 		var radius = groups[i-1].radius;
 		var center_coords = groups[i-1].coords;
 		var group_points = [];
 		for (var j = 0; j < count; j += 1) {
-			var d = gordi.util.gaussRandom(0, 0.334 * vr * radius, 0, vr * radius);
+			var d = gordi.util.gaussRandom(0, 0.334 * radius, 0, radius);
 			var b = Math.random() * 2 * Math.PI;
 			var x = Math.round(center_coords.x - d * Math.cos(b));
 			var y = Math.round(center_coords.y + d * Math.sin(b));
@@ -210,8 +209,6 @@ gordi.util.groupCreated = function(group) {
 			training_set_board.dimGroup(groupCount - 1);
 		});
 		fs.append(jQuery('<legend>Group ' + groupCount + '</legend>'));
-		fs.append(jQuery('<label for="gr' + groupCount + 'var">Variance</label>'));
-		fs.append(jQuery('<input type="number" id="gr' + groupCount + 'var" min="0" step="0.1" value="1">'));
 		fs.append(jQuery('<label for="gr' + groupCount + 'count">Count</label>'));
 		fs.append(jQuery('<input type="number" id="gr' + groupCount + 'count" min="1" step="1" value="10">'));
 		panel.append(fs);
