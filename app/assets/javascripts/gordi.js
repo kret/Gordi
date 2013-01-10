@@ -130,6 +130,8 @@ gordi.trainingSet = function() {
 			var b = Math.random() * 2 * Math.PI;
 			var x = Math.round(center_coords.x - d * Math.cos(b));
 			var y = Math.round(center_coords.y + d * Math.sin(b));
+			x -= x % 10;
+			y -= y % 10;
 			group_points.push([x ,y]);
 		}
 		ts.push({ color: groups[i-1].color, points: group_points });

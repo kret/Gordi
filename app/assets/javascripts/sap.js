@@ -55,8 +55,8 @@ var util = {
 					E.setAttributeNS(null, 'cx', cx);
 					E.setAttributeNS(null, 'cy', cy);
 					E.setAttributeNS(null, 'r', 0);
-					E.setAttributeNS(null, 'fill', '#' + (Math.random() * 0xffffff << 0).toString(16));
-					E.setAttributeNS(null, 'stroke', '#111111');
+					E.setAttributeNS(null, 'fill', getColor());
+					E.setAttributeNS(null, 'stroke', '#000000');
 					E.setAttributeNS(null, 'stroke-width', 1);
 					current = 'circle' + (new Date()).getTime();
 					E.setAttributeNS(null, 'id', current);
@@ -90,6 +90,17 @@ var util = {
 			});
 		};
 
+		var colorsList = ['#ff0000', '#00ff00', '#0000ff'];
+		var getColor = function() {
+			var color = null;
+			if (groupsList.length <= colorsList.length) {
+				color = colorsList[groupsList.length];
+			} else {
+				color = '#' + (Math.random() * 0xffffff << 0).toString(16);
+			}
+			return color;
+		};
+
 		SAP.prototype.drawPoints = function(_points) {
 			this.points = _points;
 			var el = null;
@@ -100,10 +111,10 @@ var util = {
 					el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 					el.setAttributeNS(null, 'cx', pointData.points[j][0]);
 					el.setAttributeNS(null, 'cy', pointData.points[j][1]);
-					el.setAttributeNS(null, 'r', 3);
+					el.setAttributeNS(null, 'r', 5);
 					el.setAttributeNS(null, 'fill', pointData.color);
-					el.setAttributeNS(null, 'stroke', '#111111');
-					el.setAttributeNS(null, 'stroke-width', 2);
+					el.setAttributeNS(null, 'stroke', '#000000');
+					el.setAttributeNS(null, 'stroke-width', 1);
 					this.$el.append(el);
 				}
 			}
