@@ -112,6 +112,7 @@ var util = {
 					el.setAttributeNS(null, 'cx', pointData.points[j][0]);
 					el.setAttributeNS(null, 'cy', pointData.points[j][1]);
 					el.setAttributeNS(null, 'r', 5);
+					el.setAttributeNS(null, 'opacity', 0.3);
 					el.setAttributeNS(null, 'fill', pointData.color);
 					el.setAttributeNS(null, 'stroke', '#000000');
 					el.setAttributeNS(null, 'stroke-width', 1);
