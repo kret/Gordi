@@ -25,11 +25,15 @@ gordi.loadTrainingHistory = function(data) {
 	gordi.drawNetworkState();
 
 	var controls = jQuery('#network_state_controls');
+	var status = jQuery('<div class="row" id="status"></div>');
+	var controls_row = jQuery('<div class="row"></div>');
 	var prev_btn = jQuery('<button type="submit" class="btn"><i class="icon-arrow-left"></i> Previous</button>');
 	var next_btn = jQuery('<button type="submit" class="btn">Next <i class="icon-arrow-right"></i></button>');
-	controls.append(prev_btn);
-	controls.append(jQuery('<span class="input-append"><input type="number" min="1" step="1" value="1" class="span1" id="stepNo"><span class="add-on" id="stepsCount">/ ' + gordi.network.history.length + '</span><button type="button" class="btn" id="stepGo">Go</button></span>'));
-	controls.append(next_btn);
+	controls_row.append(prev_btn);
+	controls_row.append(jQuery('<span class="input-append"><input type="number" min="1" step="1" value="1" class="span1" id="stepNo"><span class="add-on" id="stepsCount">/ ' + gordi.network.history.length + '</span><button type="button" class="btn" id="stepGo">Go</button></span>'));
+	controls_row.append(next_btn);
+	controls.append(controls_row);
+	controls.append(status);
 
 	prev_btn.on('click', gordi.util.previousTrainingStep);
 
@@ -119,7 +123,7 @@ gordi.trainingSet = function() {
 		var center_coords = groups[i-1].coords;
 		var group_points = [];
 		for (var j = 0; j < count; j += 1) {
-			var d = gordi.util.gaussRandom(0, 0.334 * radius, 0, radius);
+			var d = gordi.util.gaussRandom(0, 0.334 * radius, 0, null); // radius
 			var b = Math.random() * 2 * Math.PI;
 			var x = Math.round(center_coords.x - d * Math.cos(b));
 			var y = Math.round(center_coords.y + d * Math.sin(b));
@@ -134,8 +138,10 @@ gordi.trainingSet = function() {
 
 gordi.drawNetworkState = function() {
 	network_state_board.clear();
-	var step_points = gordi.util.historyToPoints(gordi.network.history[gordi.network.history_step - 1]);
+	var history = gordi.network.history[gordi.network.history_step - 1];
+	var step_points = gordi.util.historyToPoints(history);
 	network_state_board.drawPoints(step_points);
+	jQuery('#status').text(JSON.stringify(history));
 };
 
 gordi.util.historyToPoints = function(history) {

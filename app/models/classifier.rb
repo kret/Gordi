@@ -27,7 +27,7 @@ class Classifier
   def train
     normalized_training_data.each do |datum|
       network.train(*datum)
-      training_history << { :point_evaled => datum[0], :network_state => current_state }
+      training_history << { :train_point => datum[0], :train_output => datum[1], :network_state => current_state }
     end
   end
 
